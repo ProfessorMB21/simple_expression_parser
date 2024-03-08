@@ -5,7 +5,13 @@
 // Returns true if the character is an opening brace, otherwise false
 bool is_opening_brace(char c)
 {
-	return true ? c == '(' || c == '{' || c == '[' || c == '<' : false;
+	return c == '(' || c == '{' || c == '[' || c == '<' ? true : false;
+}
+
+// Returns true if the character is a closing brace, otherwise false
+bool is_closing_brace(char c)
+{
+	return  c == ')' || c == '}' || c == ']' || c == '>' ? true : false;
 }
 
 // Returns the corresponding closing brace to an opening brace
@@ -54,11 +60,13 @@ bool is_matching_braces(const char& s, stack_t*& brace_stack, int& _counter, cha
 		push(brace_stack, s);
 		_counter++;
 	}
-	else if (!brace_stack || !(brace_stack->c == get_opening_brace(s)))
+	else if (is_closing_brace(s))
 	{
 		// check if the stack is empty or the current brace
 		// does not have a closing brace
-		return false;
+		if (!brace_stack || get_closing_brace(brace_stack->c) != s)
+			return false;
+		return true;
 	}
 	else {
 		pop(brace_stack, _val);

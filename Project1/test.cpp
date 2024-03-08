@@ -9,10 +9,10 @@ int main()
 
 	char c = '{';
 	char b = ']';
-	const char* long_str = "Hello there I am a [{){((({)}}))))}}}](";
+	const char* long_str = "Hello there I am a [{())}]{){((({)}}))))}}}](";
 	int counter = 0; // to keep track of stack items
 	char stack_val = NULL;	// to keep track of the popped item's value
-	stack_t *braces;
+	stack_t *braces = new stack_t;
 
 	cout << c << " is brace: " << is_opening_brace(c) << endl;
 	cout << b << " is brace: " << is_opening_brace(b) << endl;
