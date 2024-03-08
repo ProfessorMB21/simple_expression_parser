@@ -9,7 +9,7 @@ bool is_opening_brace(char c);
 char get_closing_brace(char c);
 bool is_matching_braces(const char& s, stack_t*& brace_stack);
 bool is_matching_braces(const char* str, stack_t*& brace_stack);
-bool is_matching_braces(const char& s, stack_t*& brace_stack, int& _counter);
-bool has_opening_brace(char c);
+bool is_matching_braces(const char& s, stack_t*& brace_stack, int& _counter, char &_val);
+char get_opening_brace(char c);
 
 #endif // !UTILS_H
