@@ -5,7 +5,13 @@
 // Returns true if the character is an opening brace, otherwise false
 bool is_opening_brace(char c)
 {
-	return true ? c == '(' || c == '{' || c == '[' || c == '<' : false;
+	return c == '(' || c == '{' || c == '[' || c == '<' ? true : false;
+}
+
+// Returns true if the character is a closing brace, otherwise false
+bool is_closing_brace(char c)
+{
+	return  c == ')' || c == '}' || c == ']' || c == '>' ? true : false;
 }
 
 // Returns the corresponding closing brace to an opening brace
@@ -43,45 +49,13 @@ char get_opening_brace(char c)
 	}
 }
 
-// Returns true if braces are matching, otherwise false
-// keeps track of number of items pushed to and popped from the stack
-// and their corresponding values
-// trial to see if the function works
-bool is_matching_braces(const char& s, stack_t*& brace_stack, int& _counter, char &_val)
+// Validates the expression with braces
+bool check_expr(char _opening, char _closing)
 {
-	if (is_opening_brace(s))	// push to the stack if s is an opening brace
-	{
-		push(brace_stack, s);
-		_counter++;
-	}
-	else if (!brace_stack || !(brace_stack->c == get_opening_brace(s)))
-	{
-		// check if the stack is empty or the current brace
-		// does not have a closing brace
-		return false;
-	}
-	else {
-		pop(brace_stack, _val);
-		_counter--;
-	}
-}
-
-// Returns true if braces are matching, otherwise false
-bool is_matching_braces(const char& s, stack_t *&brace_stack)
-{
-	if (is_opening_brace(s))	// push to the stack if s is an opening brace
-	{
-		push(brace_stack, s);
-	}
-	else if (!brace_stack || brace_stack->c != get_closing_brace(s))
-	{
-		// check if the stack is empty or the current brace
-		// does not have a closing brace
-		return false;
-	}
-	else {
-		pop(brace_stack);
-	}
+	return true ? (_opening == '(' && _closing == ')') ||
+		(_opening == '{' && _closing == '}') ||
+		(_opening == '[' && _closing == ']') ||
+		(_opening == '<' && _closing == '>') : false;
 }
 
 // Returns true if braces are matching, otherwise false
@@ -92,14 +66,18 @@ bool is_matching_braces(const char* str, stack_t*& brace_stack)
 	{
 		if (is_opening_brace(*str))
 		{
+			std::cout << *str << " -> ";
+			//std::cout << *str << " pushed to stack" << std::endl;
 			push(brace_stack, *str);
 		}
-		else if (!brace_stack || ((brace_stack->c == get_closing_brace(*str)) == NULL))
+		else if (!brace_stack || !check_expr(brace_stack->c, *str))
 		{
 			// checks if str is a closing brace or stack is empty
 			return false;
 		}
 		else {
+			std::cout << *str << " <- ";
+			//std::cout << *str << " popped from stack" << std::endl;
 			pop(brace_stack);
 		}
 		str++;

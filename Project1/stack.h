@@ -7,7 +7,7 @@
 
 struct stack_t
 {
-	char c;
+	char c = NULL;
 	stack_t* next = nullptr;
 };
 
