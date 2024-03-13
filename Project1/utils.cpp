@@ -58,32 +58,6 @@ bool check_expr(char _opening, char _closing)
 		(_opening == '<' && _closing == '>') : false;
 }
 
-
-// Returns true if braces are matching, otherwise false
-// keeps track of number of items pushed to and popped from the stack
-// and their corresponding values
-// trial to see if the function works
-bool is_matching_braces(const char& s, stack_t*& brace_stack, int& _counter, char &_val)
-{
-	if (is_opening_brace(s))	// push to the stack if s is an opening brace
-	{
-		push(brace_stack, s);
-		_counter++;
-	}
-	else if (is_closing_brace(s))
-	{
-		// check if the stack is empty or the current brace
-		// does not have a closing brace
-		if (!brace_stack || !check_expr(brace_stack->c, s))
-			return false;
-		else
-		{
-			pop(brace_stack, _val);
-		}
-		_counter--;
-	}
-}
-
 // Returns true if braces are matching, otherwise false
 bool is_matching_braces(const char* str, stack_t*& brace_stack)
 {
