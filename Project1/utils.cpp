@@ -92,14 +92,18 @@ bool is_matching_braces(const char* str, stack_t*& brace_stack)
 	{
 		if (is_opening_brace(*str))
 		{
+			std::cout << *str << " -> ";
+			//std::cout << *str << " pushed to stack" << std::endl;
 			push(brace_stack, *str);
 		}
-		else if (!brace_stack || ((brace_stack->c == get_closing_brace(*str)) == NULL))
+		else if (!brace_stack || !check_expr(brace_stack->c, *str))
 		{
 			// checks if str is a closing brace or stack is empty
 			return false;
 		}
 		else {
+			std::cout << *str << " <- ";
+			//std::cout << *str << " popped from stack" << std::endl;
 			pop(brace_stack);
 		}
 		str++;
