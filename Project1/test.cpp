@@ -9,7 +9,7 @@ int main()
 
 	char c = '{';
 	char b = ']';
-	const char* long_str = "Hello there I am a [{())}]{){((({)}}))))}}}](";
+	const char* long_str = "[{()}(({)])]";
 	int counter = 0; // to keep track of stack items
 	char stack_val = NULL;	// to keep track of the popped item's value
 	stack_t *braces = new stack_t;
@@ -28,18 +28,13 @@ int main()
 			cout << counter << " :: " << long_str[i] << " is an opening brace " << endl;
 			cout << endl;
 		}
-		else if ((get_closing_brace(long_str[i]) == NULL) && get_opening_brace(long_str[i]))
+		else if (is_closing_brace(long_str[i]))
 		{
 			// check if is a closing brace
+			is_matching_braces(long_str[i], braces, counter, stack_val);
 			cout << "\t\t\t";
 			cout << "Popped value was " << stack_val << " at " << counter << " ";
 			cout << long_str[i] << " is a closing brace" << endl;
-		}
-		else
-		{
-			// not a closing brace
-			cout << "\t\t";
-			cout << long_str[i] << " is not a brace!" << endl;
 		}
 	}
 	return 0;

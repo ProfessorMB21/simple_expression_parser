@@ -49,6 +49,16 @@ char get_opening_brace(char c)
 	}
 }
 
+// Validates the expression with braces
+bool check_expr(char _opening, char _closing)
+{
+	return true ? (_opening == '(' && _closing == ')') ||
+		(_opening == '{' && _closing == '}') ||
+		(_opening == '[' && _closing == ']') ||
+		(_opening == '<' && _closing == '>') : false;
+}
+
+
 // Returns true if braces are matching, otherwise false
 // keeps track of number of items pushed to and popped from the stack
 // and their corresponding values
@@ -64,31 +74,13 @@ bool is_matching_braces(const char& s, stack_t*& brace_stack, int& _counter, cha
 	{
 		// check if the stack is empty or the current brace
 		// does not have a closing brace
-		if (!brace_stack || get_closing_brace(brace_stack->c) != s)
+		if (!brace_stack || !check_expr(brace_stack->c, s))
 			return false;
-		return true;
-	}
-	else {
-		pop(brace_stack, _val);
+		else
+		{
+			pop(brace_stack, _val);
+		}
 		_counter--;
-	}
-}
-
-// Returns true if braces are matching, otherwise false
-bool is_matching_braces(const char& s, stack_t *&brace_stack)
-{
-	if (is_opening_brace(s))	// push to the stack if s is an opening brace
-	{
-		push(brace_stack, s);
-	}
-	else if (!brace_stack || brace_stack->c != get_closing_brace(s))
-	{
-		// check if the stack is empty or the current brace
-		// does not have a closing brace
-		return false;
-	}
-	else {
-		pop(brace_stack);
 	}
 }
 
