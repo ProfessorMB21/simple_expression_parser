@@ -18,5 +18,3 @@ void get_current_url(char*& url_);
 char* get_host_ip();
 
 #endif // !CGI_H
-
-
