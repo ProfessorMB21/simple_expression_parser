@@ -1,6 +1,10 @@
 #include "stack.h"
 #include "cgi.h"
 #include "utils.h"
+#include <fstream>
+#include <stdarg.h>
+
+using namespace std;
 
 // Returns true if the character is an opening brace, otherwise false
 bool is_opening_brace(char c)
@@ -83,4 +87,55 @@ bool is_matching_braces(const char* str, stack_t*& brace_stack)
 		str++;
 	}
 	return true;
+}
+
+bool is_matching_braces(const char* str)
+{
+	stack_t* brace_stack = new stack_t;
+	while (*str)
+	{
+		if (is_opening_brace(*str))
+		{
+			std::cout << *str << " -> ";
+			//std::cout << *str << " pushed to stack" << std::endl;
+			push(brace_stack, *str);
+		}
+		else if (!brace_stack || !check_expr(brace_stack->c, *str))
+		{
+			// checks if str is a closing brace or stack is empty
+			return false;
+		}
+		else {
+			std::cout << *str << " <- ";
+			//std::cout << *str << " popped from stack" << std::endl;
+			pop(brace_stack);
+		}
+		str++;
+	}
+	delete brace_stack;
+	return true;
+}
+
+void write_to_file(const char* filename, unsigned int argc, ...)
+{
+	va_list pdata;
+	char* s = nullptr;
+
+	va_start(pdata, argc);
+
+	ofstream outfile(filename, ios_base::app);
+	if (!outfile) cerr << "Can't write to file, " << filename;
+
+	for (unsigned int i = 0; i < argc; i++)
+	{
+		s = va_arg(pdata, char*);
+		if (s)
+		{
+			outfile.write(s, strlen(s) + 1);
+			outfile << "\n";
+		}
+	}
+	// delete[] s;
+	outfile.close();
+	va_end(pdata);
 }

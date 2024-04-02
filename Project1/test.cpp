@@ -1,15 +1,14 @@
+#include <fstream>
 #include "stack.h"
 #include "cgi.h"
 #include "utils.h"
-#include <fstream>
 
 using namespace std;
 
-void show_content();
-
 int main()
 {
-    cout << "Content-type: text/html;\n";
+    setlocale(LC_ALL, "");
+    cout << "Content-type: text/html; charset=windows-1251\n\n";
 
 	int counter = 0; // to keep track of stack items
 	char stack_val = NULL;	// to keep track of the popped item's value
@@ -20,44 +19,36 @@ int main()
         char* line = new char[1024];
         while (!f.eof())
         {
-            f.getline(line, sizeof(line));
-            if (!strcmp(line, "<!--CONTENT-->"))
-                show_content();
+            f.getline(line, 1024);
+            if (!strcmp(line, "<!--FORM-->"))
+            {
+                cout << "<form method='post' action=\"checker.cgi\" class=\"login-form\">\n";
+                cout << "<label for=\"braces\">Enter a string of braces:</label><br>\n";
+                cout << "<input type=\"text\" name='email' placeholder=\"Brackets expression\" required>";
+                cout << "<input type=\"submit\" value=\"Submit\">\n";
+
+                if (get_req_method() == post)
+                {
+                    char* data = nullptr;
+
+                    get_form_data(data);
+
+                    char* expr = nullptr;
+                    get_param_value(expr, "email", data);
+                    if (expr)
+                    {
+                        cout << "<p>Data: " << data << "</p>";
+                        cout << "<p>Expression entered: " << expr << "</p>" << endl;
+                    }
+                    write_to_file("test_braces.txt", 1, expr);
+                    delete[] data;
+                }
+            }
             else
                 cout << line << endl;
-        } delete[] line; f.close();
+        }
+        delete[] line;
+        f.close();
     }
 	return 0;
-}
-
-// Show content on the web
-void show_content()
-{
-    cout << "<form method=\"post\" action=\"checker.cgi\" class=\"login-form\">\n";
-    cout << "<label for=\"braces\">Enter a string of braces:</label><br>\n";
-    cout << "<input type=\"text\" id=\"braces\" name=\"braces-expr\"><br>\n";
-    cout << "<input type=\"submit\" value=\"Submit\">\n";
-    cout << "</form>\n";
-    char* data = nullptr;
-
-#ifndef _DEBUG
-    cout << "<br>Method: " << (get_req_method() == post ? "POST" : "GET");
-    get_form_data(data);
-#else
-    data = _strdup("braces-expr=%D1%E5%F0%E3%E5%E9");
-#endif
-    cout << "Data: " << data << endl;
-
-    char* str = nullptr;
-    stack_t* braces = new stack_t;
-
-    get_param_value(str, "braces-expr", data);
-
-    cout << "The string now: " << str << endl;
-
-    // show the user where the error in the expresson is
-    // if there exists any
-    cout << "<div class=validator-result>\n";
-    is_matching_braces((const char *)str, braces);
-    cout << "</div>\n";
 }
