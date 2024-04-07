@@ -56,10 +56,10 @@ char get_opening_brace(char c)
 // Validates the expression with braces
 bool check_expr(char _opening, char _closing)
 {
-	return true ? (_opening == '(' && _closing == ')') ||
+	return (_opening == '(' && _closing == ')') ||
 		(_opening == '{' && _closing == '}') ||
 		(_opening == '[' && _closing == ']') ||
-		(_opening == '<' && _closing == '>') : false;
+		(_opening == '<' && _closing == '>') ? true : false;
 }
 
 // Returns true if braces are matching, otherwise false
@@ -92,31 +92,45 @@ bool is_matching_braces(const char* str, stack_t*& brace_stack)
 bool is_matching_braces(const char* str)
 {
 	stack_t* brace_stack = new stack_t;
+
+	std::cout << "<p>";
 	while (*str)
 	{
 		if (is_opening_brace(*str))
 		{
-			std::cout << *str << " -> ";
-			//std::cout << *str << " pushed to stack" << std::endl;
+			if (strlen(str) == 1)
+			{
+				std::cout << "<span class=\"error-status\">" << *str << "</span>";
+			}
+			else
+				std::cout << *str;
 			push(brace_stack, *str);
 		}
-		else if (!brace_stack || !check_expr(brace_stack->c, *str))
+		else if (!brace_stack || !check_expr(brace_stack->c, *str)) // checks if str is a closing brace or stack is empty
 		{
-			// checks if str is a closing brace or stack is empty
-			return false;
+			if (!isalnum(*str) && is_closing_brace(*str))
+			{
+				std::cout << "<span class=\"error-status\">" << *str << "</span>";
+			}
+			else
+				std::cout << *str;
+			//return false;
 		}
 		else {
-			std::cout << *str << " <- ";
-			//std::cout << *str << " popped from stack" << std::endl;
+			std::cout << *str;
 			pop(brace_stack);
 		}
 		str++;
 	}
+	if (brace_stack)
+		std::cout << "<span class=\"error-status\" style='color: blue'>" << brace_stack->c << "</span>";
+	std::cout << "</p>" << std::endl;
+
 	delete brace_stack;
 	return true;
 }
 
-void write_to_file(const char* filename, unsigned int argc, ...)
+void write_to_file_2(const char* filename, unsigned int argc, ...)
 {
 	va_list pdata;
 	char* s = nullptr;
@@ -124,18 +138,16 @@ void write_to_file(const char* filename, unsigned int argc, ...)
 	va_start(pdata, argc);
 
 	ofstream outfile(filename, ios_base::app);
-	if (!outfile) cerr << "Can't write to file, " << filename;
-
-	for (unsigned int i = 0; i < argc; i++)
+	if (outfile.is_open())
 	{
-		s = va_arg(pdata, char*);
-		if (s)
+		for (unsigned int i = 0; i < argc; i++)
 		{
-			outfile.write(s, strlen(s) + 1);
-			outfile << "\n";
+			s = va_arg(pdata, char*);
+			outfile << s;
 		}
+		outfile << '\n';
+		outfile.close();
 	}
-	// delete[] s;
-	outfile.close();
 	va_end(pdata);
 }
+
