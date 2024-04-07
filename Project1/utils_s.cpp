@@ -89,7 +89,7 @@ bool is_matching_braces(const char* str, stack_t*& brace_stack)
 	return true;
 }
 
-bool is_matching_braces(const char* str)
+void is_matching_braces(const char* str)
 {
 	stack_t* brace_stack = new stack_t;
 
@@ -114,20 +114,20 @@ bool is_matching_braces(const char* str)
 			}
 			else
 				std::cout << *str;
-			//return false;
+		}
+		else if (brace_stack && *str == NULL)
+		{
+			std::cout << "<span class=\"error-status\" style='color: blue'>" << brace_stack->c << "</span>";
 		}
 		else {
 			std::cout << *str;
 			pop(brace_stack);
 		}
 		str++;
-	}
-	if (brace_stack)
-		std::cout << "<span class=\"error-status\" style='color: blue'>" << brace_stack->c << "</span>";
+	}	
 	std::cout << "</p>" << std::endl;
 
 	delete brace_stack;
-	return true;
 }
 
 void write_to_file_2(const char* filename, unsigned int argc, ...)
@@ -150,4 +150,3 @@ void write_to_file_2(const char* filename, unsigned int argc, ...)
 	}
 	va_end(pdata);
 }
-

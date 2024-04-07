@@ -106,7 +106,7 @@ void run_validator(const char* data)
 {
     if (!data) return;
 
-    cout << "<p> Starting brace validator </p>\n";
+    cout << "<p class='info'> Starting brace validator!</p>\n";
     is_matching_braces(data);
-    cout << "<p> Validator stopped!</p>" << endl;
+    cout << "<p class='info'> Validator stopped!</p>" << endl;
 }
