@@ -78,7 +78,7 @@ char *collect_data()
     cout << "<form action=\"checker.cgi\" method=\"post\" class=\"comment-form\">";
     cout << "<div>";
     cout << "<label for=\"comment\" class=\"required\">Enter an expression of braces</label>";
-    cout << "<textarea name=\"user-comment\" id=\"comment\" rows=\"2\" cols=\"100\" placeholder=\"([{}])...\" minlength=\"1\" maxlength=\"256\" required=\"required\"></textarea>";
+    cout << "<textarea name=\"user-comment\" id=\"comment\" rows=\"2\" cols=\"30\" placeholder=\"([{}])...\" minlength=\"1\" maxlength=\"256\" required=\"required\"></textarea>";
     cout << "</div>";
     cout << "<input name=\"submit\" type=\"submit\" value=\"Submit\"/>";
     cout << "</form>";
@@ -94,8 +94,12 @@ char *collect_data()
         get_param_value(data, "user-comment", result);
         if (result)
         {
-            cout << "<p>Expression entered: " << result << "</p>" << endl;
-            write_to_file_2(filename, 1, result);
+            cout << "<p>Expression entered: <span style='color: darkslateblue'>";
+            for (int i = 0; result[i] != NULL; i++)
+                cout << "<span>" << result[i] << "</span>";
+            cout << "</span></p>" << endl;
+
+            write_to_file_3(filename, 1, result);
         }
         delete[] data;
         return result;

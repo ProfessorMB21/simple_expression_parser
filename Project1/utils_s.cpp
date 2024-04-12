@@ -102,22 +102,30 @@ void is_matching_braces(const char* str)
 			{
 				std::cout << "<span class=\"error-status\">" << *str << "</span>";
 			}
+			else if (brace_stack && *str == NULL)
+			{
+				std::cout << "<span class=\"error-status\" style='color: blue'>" << brace_stack->c << "</span>";
+			}
 			else
+			{
 				std::cout << *str;
-			push(brace_stack, *str);
+				push(brace_stack, *str);
+			}
 		}
-		else if (!brace_stack || !check_expr(brace_stack->c, *str)) // checks if str is a closing brace or stack is empty
+		if (!brace_stack || !check_expr(brace_stack->c, *str)) // checks if str is a closing brace or stack is empty
 		{
 			if (!isalnum(*str) && is_closing_brace(*str))
 			{
 				std::cout << "<span class=\"error-status\">" << *str << "</span>";
 			}
-			else
-				std::cout << *str;
-		}
-		else if (brace_stack && *str == NULL)
-		{
-			std::cout << "<span class=\"error-status\" style='color: blue'>" << brace_stack->c << "</span>";
+			else if(brace_stack && *str == NULL)
+			{
+				std::cout << "<span class=\"error-status\" style='color: blue'>" << brace_stack->c << "</span>";
+			}
+			//else
+			// {
+				//std::cout << *str;
+			//}
 		}
 		else {
 			std::cout << *str;
@@ -130,7 +138,7 @@ void is_matching_braces(const char* str)
 	delete brace_stack;
 }
 
-void write_to_file_2(const char* filename, unsigned int argc, ...)
+void write_to_file_3(const char* filename, unsigned int argc, ...)
 {
 	va_list pdata;
 	char* s = nullptr;
