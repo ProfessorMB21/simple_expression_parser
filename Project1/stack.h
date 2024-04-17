@@ -8,6 +8,8 @@
 struct stack_t
 {
 	char c = NULL;
+	//bool hasError;
+	int id = 0;
 	stack_t* next = nullptr;
 };
 

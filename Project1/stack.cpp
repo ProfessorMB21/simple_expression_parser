@@ -7,6 +7,7 @@ void push(stack_t*& stack, char value)
 	stack_t* new_el = new stack_t;
 	new_el->c = value;
 	new_el->next = stack;
+	new_el->id++;
 	stack = new_el;
 }
 
@@ -19,6 +20,7 @@ bool pop(stack_t*& stack, char& value)
 		value = stack->c;
 		auto* temp = stack;	// remove item on top of stack
 		delete temp;
+		stack->id--;
 		stack = stack->next;
 		return true;
 	}
@@ -32,6 +34,7 @@ bool pop(stack_t*& stack)
 	{
 		auto* temp = stack;
 		stack = stack->next;
+		stack->id--;
 		delete temp;
 		return true;
 	}
@@ -57,6 +60,7 @@ void clear(stack_t*& stack)
 	{
 		auto* temp = stack;
 		stack = stack->next;
+		stack->id--;
 		delete temp;
 	}
 }

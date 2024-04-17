@@ -94,7 +94,7 @@ char *collect_data()
         get_param_value(data, "user-comment", result);
         if (result)
         {
-            cout << "<p>Expression entered: <span style='color: darkslateblue'>";
+            cout << "<p>Expression entered: <span style='color: darkslateblue;'>";
             for (int i = 0; result[i] != NULL; i++)
                 cout << "<span>" << result[i] << "</span>";
             cout << "</span></p>" << endl;
